@@ -101,7 +101,7 @@ namespace :deploy do
     task :release do
       on release_roles :all do
         tmp_current_path = release_path.parent.join(current_path.basename)
-        execute :ln, "-s", release_path, tmp_current_path
+        execute :ln, "-sfn", release_path, tmp_current_path
         execute :mv, tmp_current_path, current_path.parent
       end
     end
@@ -123,7 +123,7 @@ namespace :deploy do
           source = shared_path.join(dir)
           next if test "[ -L #{target} ]"
           execute :rm, "-rf", target if test "[ -d #{target} ]"
-          execute :ln, "-s", source, target
+          execute :ln, "-sfn", source, target
         end
       end
     end
@@ -139,7 +139,7 @@ namespace :deploy do
           source = shared_path.join(file)
           next if test "[ -L #{target} ]"
           execute :rm, target if test "[ -f #{target} ]"
-          execute :ln, "-s", source, target
+          execute :ln, "-sfn", source, target
         end
       end
     end
